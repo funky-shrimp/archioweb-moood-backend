@@ -1,0 +1,20 @@
+{
+  "name": "archioweb-mooodle-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node ./bin/start",
+    "dev": "set DEBUG=express-api:* && nodemon"
+  },
+  "dependencies": {
+    "debug": "^4.4.1",
+    "express": "^5.1.0",
+    "http-errors": "^2.0.0",
+    "mongoose": "^8.19.1",
+    "morgan": "^1.10.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
