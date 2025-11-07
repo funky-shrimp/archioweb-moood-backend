@@ -3,8 +3,8 @@ import createError from "http-errors";
 import logger from "morgan";
 import mongoose from "mongoose";
 
-import indexRouter from "./routes/index.js";
-import usersRouter from "./routes/users.js";
+import indexRouter from "./src/routes/index.js";
+import usersRouter from "./src/routes/users.js";
 
 const app = express();
 
