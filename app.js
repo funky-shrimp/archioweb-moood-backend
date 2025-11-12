@@ -3,12 +3,14 @@ import createError from "http-errors";
 import logger from "morgan";
 import mongoose from "mongoose";
 
+import * as config from "./config.js";
+
 import indexRouter from "./src/routes/index.js";
 import usersRouter from "./src/routes/users.js";
 
 const app = express();
 
-mongoose.connect(process.env.DATABASE_URL || "mongdb://localhost/your-app-name")
+mongoose.connect(config.database_url || "mongdb://localhost/your-app-name")
 
 app.use(function myMiddleware(req, res, next) {
   console.log('Hello World!');
