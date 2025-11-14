@@ -6,12 +6,12 @@ const commentSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
-        required: true, 
+        required: [true, "User ID is required"],
     },
     boardId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Board',
-        required: true,
+        required: [true, "Board ID is required"],
     },
     parentCommentId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -20,7 +20,7 @@ const commentSchema = new mongoose.Schema({
     },
     content: {
         type: String,
-        required: true,
+        required: [true, "Comment can't be empty"],
     },
     createdAt: {
         type: Date,
