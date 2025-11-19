@@ -7,10 +7,11 @@ import * as config from "./config.js";
 
 import indexRouter from "./src/routes/index.js";
 import usersRouter from "./src/routes/users.js";
+import authRouter from "./src/routes/auth.js";
 
 const app = express();
 
-mongoose.connect(config.database_url || "mongdb://localhost/your-app-name")
+mongoose.connect(config.database_url || "mongodb://localhost/your-app-name")
 
 app.use(function myMiddleware(req, res, next) {
   console.log('Hello World!');
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/auth", authRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
