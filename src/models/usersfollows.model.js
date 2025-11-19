@@ -4,12 +4,12 @@ const userFollow = new mongoose.Schema({
   followerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
+    required: [true, "Follower ID is required"],
   },
   followedId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
+    required: [true, "Followed ID is required"],
   },
   createdAt: {
     type: Date,

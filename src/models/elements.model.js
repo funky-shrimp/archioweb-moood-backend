@@ -6,12 +6,12 @@ const elementSchema = new mongoose.Schema({
     boardId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Board',
-        required: true,
+        required: [true, "Board ID is required"],
     },
     type: {
         type: String,
         enum: ['text', 'image', 'video', 'audio', 'shape'],
-        required: true,
+        required: [true,"Type is required"],
     },
     contentUrl: {
         type: String,
@@ -23,19 +23,19 @@ const elementSchema = new mongoose.Schema({
     },
     positionX:{
         type: Number,
-        required: true,
+        required: [true,"Position X is required"],
     },
     positionY:{
         type: Number,
-        required: true,
+        required: [true,"Position Y is required"],
     },
     width:{
         type: Number,
-        required: true,
+        required: [true,"Width is required"],
     },
     height:{
         type: Number,
-        required: true,
+        required: [true,"Height is required"],
     },
     rotation:{
         type: Number,
