@@ -8,6 +8,12 @@ import * as config from "./config.js";
 import indexRouter from "./src/routes/index.js";
 import usersRouter from "./src/routes/users.js";
 
+import {boards} from "./src/features/boards/boards/index.js";
+import {elements} from "./src/features/board/elements/index.js";
+import {labels} from "./src/features/boards/labels/index.js";
+import {comments} from "./src/features/socials/comments/index.js";
+import {users} from "./src/features/socials/users/index.js";
+
 const app = express();
 
 mongoose.connect(config.database_url || "mongdb://localhost/your-app-name")

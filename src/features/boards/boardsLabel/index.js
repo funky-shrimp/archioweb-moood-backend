@@ -1,0 +1,1 @@
+export { default as boardsLabel } from "./boardsLabel.route";

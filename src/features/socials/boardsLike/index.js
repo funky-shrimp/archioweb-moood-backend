@@ -1,0 +1,1 @@
+export { default as boardsLike } from "./boardsLike.route";
