@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 
 const limitations = {
-    bioLength: 30,
+  bioLength: 30,
 };
-
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -37,7 +36,9 @@ const userSchema = new mongoose.Schema({
       validator: function (v) {
         // correct password format: at least 8 characters, one uppercase, one lowercase, one number, one special character
         //sAucisse6!
-        return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(v);
+        return /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/.test(
+          v
+        );
       },
       message: (props) => `The password is not valid!`,
     },
@@ -56,6 +57,14 @@ const userSchema = new mongoose.Schema({
       },
       message: (props) => `Bio is above ${limitations.bioLength} characters!`,
     },
+  },
+  role: {
+    type: String,
+    enum: {
+      values: ["user", "admin"],
+      message: "Role is either user or admin",
+    },
+    default: "user",
   },
   createdAt: {
     type: Date,
