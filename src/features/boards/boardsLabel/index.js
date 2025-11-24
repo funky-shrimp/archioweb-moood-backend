@@ -1,1 +1,1 @@
-export { default as boardsLabel } from "./boardsLabel.route";
+export { default as boardsLabel } from "./boardsLabel.route.js";

@@ -6,17 +6,15 @@ import mongoose from "mongoose";
 import * as config from "./config.js";
 
 import indexRouter from "./src/routes/index.js";
-import usersRouter from "./src/routes/users.js";
+//import usersRouter from "./src/routes/users.js";
 
-import {boards} from "./src/features/boards/boards/index.js";
-import {elements} from "./src/features/board/elements/index.js";
-import {labels} from "./src/features/boards/labels/index.js";
-import {comments} from "./src/features/socials/comments/index.js";
-import {users} from "./src/features/socials/users/index.js";
+import apiRouter from "./src/routes/apiRouter.js";
 
 const app = express();
 
-mongoose.connect(config.database_url || "mongdb://localhost/your-app-name")
+mongoose.connect(config.database_url || "mongdb://localhost/your-app-name").catch((err) => {
+  console.error("MongoDB connection error:", err);
+});
 
 app.use(function myMiddleware(req, res, next) {
   console.log('Hello World!');
@@ -28,7 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/", indexRouter);
-app.use("/users", usersRouter);
+
+app.use("/api", apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

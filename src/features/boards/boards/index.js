@@ -1,1 +1,1 @@
-export { default as boards } from "./boards.route";
+export { default as boards } from "./boards.route.js";

@@ -1,1 +1,1 @@
-export { default as labels } from "./labels.route";
+export { default as labels } from "./labels.route.js";

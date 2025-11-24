@@ -1,1 +1,1 @@
-export { default as boardsLike } from "./boardsLike.route";
+export { default as boardsLike } from "./boardsLike.route.js";

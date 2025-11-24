@@ -1,1 +1,1 @@
-export { default as comments } from "./comments.route";
+export { default as comments } from "./comments.route.js";

@@ -1,1 +1,1 @@
-export { default as usersFollow } from "./usersFollow.route";
+export { default as usersFollow } from "./usersFollow.route.js";
