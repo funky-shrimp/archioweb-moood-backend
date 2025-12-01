@@ -1,12 +1,13 @@
 import Comments from "../../socials/comments/comment.model.js";
+import { addAuthorToComment } from "./comments.utils.js";
 
 async function createComment(commentData) {
-  const comment = new Comments(commentData);
-  return comment.save();
+  const comment = await new Comments(commentData).save();
+  return await addAuthorToComment(comment);
 }
 
 async function deleteComment(postId) {
-    return Comments.findByIdAndDelete(postId);
+  return Comments.findByIdAndDelete(postId);
 }
 
-export {createComment, deleteComment};
+export { createComment, deleteComment };

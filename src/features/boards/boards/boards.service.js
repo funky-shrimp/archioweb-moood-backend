@@ -1,5 +1,6 @@
 import Boards from "./boards.model.js";
 import Comments from "../../socials/comments/comment.model.js";
+import { addAuthorToComment } from "../../socials/comments/comments.utils.js";
 
 async function getAllBoards() {
   return Boards.find();
@@ -23,7 +24,15 @@ async function deleteBoard(id) {
 }
 
 async function getCommentsByBoardId(id) {
-  return Comments.find({ boardId: id });
+  const comments = await Comments.find({ boardId: id });
+  return await addAuthorToComment(comments);
 }
 
-export { getAllBoards, createBoard, getBoardById, updateBoard, deleteBoard, getCommentsByBoardId };
+export {
+  getAllBoards,
+  createBoard,
+  getBoardById,
+  updateBoard,
+  deleteBoard,
+  getCommentsByBoardId,
+};
