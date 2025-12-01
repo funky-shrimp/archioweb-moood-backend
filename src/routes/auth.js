@@ -22,7 +22,10 @@ router.get('/protected', authenticateJWT, (req, res) => {
 
 // Register
 router.post('/register',register, (req, res) => {
-    res.status(501).json({ message: 'Not implemented' });
+    res.status(201).json({
+            message: "Utilisateur créé avec succès",
+            user: req.user
+        });
 });
 
 

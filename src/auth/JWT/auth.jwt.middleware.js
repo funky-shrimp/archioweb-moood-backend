@@ -13,7 +13,6 @@ function authenticateJWT(req, res, next) {
 
     try {
         const decoded = jwt.verify(token, jwt_secret || 'dev-secret');
-        console.log('Decoded JWT:', decoded);
 
         req.user = {
             id: decoded.sub,
