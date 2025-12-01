@@ -9,7 +9,7 @@ const labelSchema = new mongoose.Schema({
         // limited label to 20 characters
         return v.length <= 20;
       },
-      message: (props) => `Bio is above 20 characters!`,
+      message: (props) => `label is above 20 characters!`,
     },
   },
 });

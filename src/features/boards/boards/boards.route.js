@@ -10,6 +10,6 @@ router.get('/:id', boardsController.getBoardById);
 router.put('/:id', boardsController.updateBoard);
 router.delete('/:id', boardsController.deleteBoard);
 
-router.get('/:id/comment', boardsController.getCommentsByBoardId);
+router.get('/:id/comments', boardsController.getCommentsByBoardId);
 
 export default router;
