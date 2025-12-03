@@ -6,15 +6,19 @@ import mongoose from "mongoose";
 import * as config from "./config.js";
 
 import indexRouter from "./src/routes/index.js";
-//import usersRouter from "./src/routes/users.js";
 
 import apiRouter from "./src/routes/apiRouter.js";
+
+import usersRouter from "./src/routes/users.js";
+import authRouter from "./src/routes/auth.js";
 
 const app = express();
 
 mongoose.connect(config.database_url || "mongdb://localhost/your-app-name").catch((err) => {
   console.error("MongoDB connection error:", err);
 });
+
+
 
 app.use(function myMiddleware(req, res, next) {
   console.log('Hello World!');
@@ -29,6 +33,8 @@ app.use("/", indexRouter);
 
 app.use("/api", apiRouter);
 
+app.use("/users", usersRouter);
+app.use("/auth", authRouter);
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
