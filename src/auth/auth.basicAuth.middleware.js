@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import User from "../models/users.model.js";
+import User from "../features/socials/users/users.model.js";
 
 // Basic Auth middleware
 export default async function basicAuth(req, res, next) {
