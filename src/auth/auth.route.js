@@ -1,8 +1,8 @@
 import express from "express";
-import basicAuth from "../auth/auth.basicAuth.middleware.js";
-import { authenticateJWT } from "../auth/JWT/auth.jwt.middleware.js";
-import { createJWT } from "../auth/JWT/auth.helpers.js";
-import register from "../auth/register.middleware.js";
+import basicAuth from "./auth.basicAuth.middleware.js";
+import { authenticateJWT } from "./JWT/auth.jwt.middleware.js";
+import { createJWT } from "./JWT/auth.helpers.js";
+import register from "./register.middleware.js";
 
 const router = express.Router();
 
@@ -29,5 +29,5 @@ router.post('/register',register, (req, res) => {
 });
 
 
-export default router;
+export {router as auth};
 //mettre ce qu'il faut dans le payload (a voir)
