@@ -45,6 +45,10 @@ const options = {
       {
         name: "labels",
         description: "All APIs related to the /labels/ endpoints.",
+      },
+      {
+        name: "elements",
+        description: "All APIs related to the /elements/ endpoints.",
       }
     ],
   },
