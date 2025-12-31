@@ -1,14 +1,36 @@
 import Boards from "./boards.model.js";
 import Comments from "../../socials/comments/comment.model.js";
+
 import { addAuthorToComment } from "../../socials/comments/comments.utils.js";
+
+import {checkLabelExists, linkLabelsToBoard} from "../boardsLabel/boardsLabel.utils.js";
 
 async function getAllBoards() {
   return Boards.find();
 }
 
 async function createBoard(boardData) {
+  let labelsIds = [];
+
+  console.log("Creating board with data:", boardData);
+
+  //check if label is added in boardData
+  if (boardData.labels && boardData.labels.length > 0) {
+    labelsIds = await checkLabelExists(boardData.labels);
+  }
+
+  // create new board and save it
   const board = new Boards(boardData);
-  return board.save();
+
+  const newBoard = await board.save();
+
+  // links labels in boardsLabel
+  if (labelsIds.length > 0) {
+    const result = await linkLabelsToBoard(newBoard._id, labelsIds);
+    console.log("Labels linked to board:", result);
+  }
+
+  return newBoard;
 }
 
 async function getBoardById(id) {
