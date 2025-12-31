@@ -1,5 +1,5 @@
 import Users from "./users.model.js";
-import { getUserBoardsId } from "./users.utils.js";
+import { getUserBoardsId, getUserFollowersCount } from "./users.utils.js";
 
 async function getAllUsers() {
   console.log("Service: Fetching all users");
@@ -12,10 +12,14 @@ async function getUserById(userId) {
   // Fetch boards id created by the user
   const boardsId = await getUserBoardsId(userId);
 
+  const userFollowersCount = await getUserFollowersCount(userId);
+
   return {
     ...user.toObject(),
+    followersCount: userFollowersCount,
     boards: boardsId,
   };
 }
+
 
 export { getAllUsers, getUserById };
