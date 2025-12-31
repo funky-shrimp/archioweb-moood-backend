@@ -6,6 +6,7 @@ import {labels} from "../features/boards/labels/index.js";
 import {elements} from "../features/boards/elements/index.js";
 import {users} from "../features/socials/users/index.js";
 import {boardsLike} from "../features/socials/boardsLike/index.js";
+import {usersFollow} from "../features/socials/usersFollow/index.js";
 
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.use("/labels", labels);
 router.use("/elements", elements);
 router.use("/users", users);
 router.use("/boardslike", boardsLike);
+router.use("/usersfollow", usersFollow);
 
 
 
