@@ -79,7 +79,7 @@ src/
   routes/             # API and index routes
 ```
 
-The project structure was based on this [article](https://fadamakis.com/express-mongo-application-architecture-and-folder-structure-1f95274c28fe) from Fotis Adamakis.
+The project structure was based on this [article](https://fadamakis.com/express-mongo-application-architecture-and-folder-structure-1f95274c28fe) by Fotis Adamakis.
 
 ## Scripts
 
@@ -91,6 +91,23 @@ The project structure was based on this [article](https://fadamakis.com/express-
 - API routes are defined under `/api/docs`.
 - See `src/routes/apiRouter.js` and feature folders for endpoints.
 - (Optional) Swagger documentation can be added via `swagger-jsdoc` and `swagger-ui-express`.
+
+API documentation was made with the help of Github Copilot and model GPT-4.1.
+
+Here was the prompt (change **usersFollow** with the features name):
+```
+Can you do the api documentation for usersFollow.route.js.
+
+Here is some instruction :
+-Use the tag "usersFollow"
+-Add parameters content and example
+-Add requestBody content and example
+-Add responses content and example
+-Put the comment block above it's own route
+-Optimize the documentation with components (schema, responses, parameters, requestBody) if necessary
+
+You can base yourself on usersFollow's model, service and controller.
+```
 
 ## Dependencies
 
