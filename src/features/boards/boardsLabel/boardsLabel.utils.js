@@ -1,4 +1,5 @@
 import Labels from "../labels/label.model.js";
+import BoardsLabel from "./boardsLabel.model.js";
 import { createLabel } from "../labels/labels.service.js";
 import { createLabelBoardLink } from "./boardsLabel.service.js";
 
@@ -34,4 +35,10 @@ async function linkLabelsToBoard(boardId, labelsIds) {
   return await Promise.allSettled(linkPromises);
 }
 
-export {checkLabelExists, linkLabelsToBoard};
+async function unlinkLabelToBoards(labelId){
+  //delete all links between this label and boards
+  let result = await BoardsLabel.deleteMany({ labelId: labelId });
+  return result;
+}
+
+export {checkLabelExists, linkLabelsToBoard, unlinkLabelToBoards};

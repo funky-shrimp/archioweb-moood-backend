@@ -1,4 +1,4 @@
-import boardsLabel from "./boardslabel.model.js";
+import boardsLabel from "./boardsLabel.model.js";
 
 async function createLabelBoardLink(boardId, labelId) {
   const link = new boardsLabel({ boardId, labelId });
