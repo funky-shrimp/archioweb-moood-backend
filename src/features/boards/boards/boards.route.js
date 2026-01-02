@@ -18,7 +18,7 @@ const router = express.Router();
  *         description:
  *           type: string
  *           maxLength: 200
- *         creator:
+ *         userId:
  *           type: string
  *           description: User ID
  *         isPublic:
