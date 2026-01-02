@@ -1,3 +1,4 @@
+import { parse } from "dotenv";
 import * as boardsService from "./boards.service.js";
 import mongoose from "mongoose";
 
@@ -6,6 +7,10 @@ async function getAllBoards(req, res, next) {
 
     // validate userId if provided in the query parameters 
     let userId = undefined;
+
+    let limit = parseInt(req.query.limit) || 2;
+    let cursor = req.query.cursor || null;
+
     if (req.query.userId) {
       if (mongoose.Types.ObjectId.isValid(req.query.userId)) {
         userId = req.query.userId;
@@ -15,7 +20,7 @@ async function getAllBoards(req, res, next) {
     }
 
 
-    res.json(await boardsService.getAllBoards(userId));
+    res.json(await boardsService.getAllBoards(userId, { limit, cursor }));
   } catch (err) {
     next(err);
   }

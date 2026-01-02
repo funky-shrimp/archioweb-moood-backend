@@ -6,6 +6,39 @@ const router = express.Router();
 /**
  * @swagger
  * components:
+ *   parameters:
+ *     BoardId:
+ *       in: path
+ *       name: id
+ *       required: true
+ *       schema:
+ *         type: string
+ *       description: The board ID
+ *     UserIdQuery:
+ *       in: query
+ *       name: userId
+ *       required: false
+ *       schema:
+ *         type: string
+ *       description: Filter boards by userId
+ *       example: "60c72b2f9b1d8c001c8e4b8a"
+ *     LimitQuery:
+ *       in: query
+ *       name: limit
+ *       required: false
+ *       schema:
+ *         type: integer
+ *         default: 2
+ *       description: Number of boards to return per page
+ *       example: 2
+ *     CursorQuery:
+ *       in: query
+ *       name: cursor
+ *       required: false
+ *       schema:
+ *         type: string
+ *       description: Cursor for pagination (use nextCursor from previous response)
+ *       example: "60d21b4667d0d8992e610c80"
  *   schemas:
  *     Board:
  *       type: object
@@ -80,14 +113,6 @@ const router = express.Router();
  *             creator: "60c72b2f9b1d8c001c8e4b8a"
  *             isPublic: true
  *             createdAt: "2023-10-01T12:00:00Z"
- *   parameters:
- *     BoardId:
- *       in: path
- *       name: id
- *       required: true
- *       schema:
- *         type: string
- *       description: The board ID
  */
 
 /**
@@ -96,6 +121,10 @@ const router = express.Router();
  *   get:
  *     summary: Retrieve a list of boards
  *     tags: [boards]
+ *     parameters:
+ *       - $ref: '#/components/parameters/UserIdQuery'
+ *       - $ref: '#/components/parameters/LimitQuery'
+ *       - $ref: '#/components/parameters/CursorQuery'
  *     responses:
  *       200:
  *         $ref: '#/components/responses/BoardList'

@@ -1,5 +1,7 @@
 import Boards from "./boards.model.js";
 import Comments from "../../socials/comments/comment.model.js";
+import mongoose from "mongoose";
+
 
 import { addAuthorToComment } from "../../socials/comments/comments.utils.js";
 
@@ -10,10 +12,8 @@ import {
 
 import { getBoardsWithLikesUserLabels } from "./boards.utils.js";
 
-async function getAllBoards(userId) {
-
-  // initial query listing all boards
-  let query = Boards.find();
+async function getAllBoards(userId, { limit = 20, cursor = null } = {}) {
+  let queryObj = {};
 
   // apply userId filter if provided
   if (userId !== undefined) {
@@ -23,19 +23,39 @@ async function getAllBoards(userId) {
       throw new Error("No boards found for the provided userId.");
     }
 
-    // filter boards by userId
-    query = query.where("userId").equals(userId);
+    queryObj.userId = userId;
   }
 
-  // get only the _id of the boards matching the query
-  // to pass to getBoardsWithLikesUserLabels
-  const boards = await query.select("_id").exec();
+  // Cursor-based pagination: only fetch boards with _id < cursor
+  if (cursor) {
+    queryObj._id = { $lt: new mongoose.Types.ObjectId(cursor) };
+  }
+
+  // Query, sort, and limit
+  const boards = await Boards.find(queryObj)
+    .sort({ _id: -1 }) // newest first
+    .limit(limit)
+    .select("_id")
+    .exec();
+
+  // retrieve all Ids for aggregation
   const boardIds = boards.map((b) => b._id);
 
   // If no filter, boardIds will be empty, so pass undefined to get all boards
-  return await getBoardsWithLikesUserLabels(
+  const items = await getBoardsWithLikesUserLabels(
     boardIds.length > 0 ? boardIds : undefined
   );
+
+  // Maintain order as per boardIds. Because the aggregation may return in different order
+  const orderedItems = boardIds.map(id => items.find(b => String(b._id) === String(id))).filter(Boolean);
+
+  // Prepare nextCursor
+  let nextCursor = null;
+  if (orderedItems.length === limit) {
+    nextCursor = orderedItems[orderedItems.length - 1]._id;
+  }
+
+  return { items: orderedItems, nextCursor };
 }
 
 async function createBoard(boardData) {
