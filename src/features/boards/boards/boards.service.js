@@ -5,8 +5,10 @@ import { addAuthorToComment } from "../../socials/comments/comments.utils.js";
 
 import {checkLabelExists, linkLabelsToBoard} from "../boardsLabel/boardsLabel.utils.js";
 
+import { getBoardsWithLikesUserLabels } from "./boards.utils.js";
+
 async function getAllBoards() {
-  return Boards.find();
+  return await getBoardsWithLikesUserLabels();
 }
 
 async function createBoard(boardData) {
@@ -34,7 +36,8 @@ async function createBoard(boardData) {
 }
 
 async function getBoardById(id) {
-  return Boards.findById(id);
+  const board = await getBoardsWithLikesUserLabels(id);
+  return board[0] || null;
 }
 
 async function updateBoard(id, boardData) {

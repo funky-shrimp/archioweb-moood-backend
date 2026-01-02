@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 //userId, boardId, createdAt
 
-const baordLikeSchema = new mongoose.Schema({
+const boardLikeSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
@@ -20,6 +20,6 @@ const baordLikeSchema = new mongoose.Schema({
 });
 
 // Add a unique compound index for userId and boardId
-baordLikeSchema.index({ userId: 1, boardId: 1 }, { unique: true });
+boardLikeSchema.index({ userId: 1, boardId: 1 }, { unique: true });
 
-export default mongoose.model('BoardLike', baordLikeSchema);
+export default mongoose.model('BoardLike', boardLikeSchema);
