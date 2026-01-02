@@ -2,6 +2,8 @@
 
 Moood is a mashup between a whiteboard and Pinterest. It was developed for the course "ArchiOWeb" at HEIG-VD in Media Engineering.
 
+This is the backend repository. You can find the [frontend here](https://github.com/funky-shrimp/archioweb-moood-frontend)
+
 ## Table of Contents
 
 - [Features](#features)
