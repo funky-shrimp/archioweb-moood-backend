@@ -30,7 +30,7 @@ const boardSchema = new mongoose.Schema({
       message: (props) => `Description is above ${limitations.descriptionMaxLength}  characters!`,
     },
   },
-  creator: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
