@@ -53,6 +53,10 @@ const options = {
         name: "boardsLike",
         description: "All APIs related to the /boardsLike/ endpoints.",
       },
+      {
+        name: "users",
+        description: "All APIs related to the /users/ endpoints.",
+      },
     ],
   },
   apis: ['./src/features/**/**/*.route.js',"./src/auth/auth.route.js"], //files with *.route.js 
