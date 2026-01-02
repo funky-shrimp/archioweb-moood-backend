@@ -57,6 +57,10 @@ const options = {
         name: "users",
         description: "All APIs related to the /users/ endpoints.",
       },
+      {
+        name: "usersFollow",
+        description: "All APIs related to the /usersFollow/ endpoints.",
+      },
     ],
   },
   apis: ['./src/features/**/**/*.route.js',"./src/auth/auth.route.js"], //files with *.route.js 
