@@ -1,8 +1,21 @@
 import * as boardsService from "./boards.service.js";
+import mongoose from "mongoose";
 
 async function getAllBoards(req, res, next) {
   try {
-    res.json(await boardsService.getAllBoards());
+
+    // validate userId if provided in the query parameters 
+    let userId = undefined;
+    if (req.query.userId) {
+      if (mongoose.Types.ObjectId.isValid(req.query.userId)) {
+        userId = req.query.userId;
+      } else {
+        throw new Error("Invalid userId");
+      }
+    }
+
+
+    res.json(await boardsService.getAllBoards(userId));
   } catch (err) {
     next(err);
   }

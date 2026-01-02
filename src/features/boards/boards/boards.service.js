@@ -3,12 +3,39 @@ import Comments from "../../socials/comments/comment.model.js";
 
 import { addAuthorToComment } from "../../socials/comments/comments.utils.js";
 
-import {checkLabelExists, linkLabelsToBoard} from "../boardsLabel/boardsLabel.utils.js";
+import {
+  checkLabelExists,
+  linkLabelsToBoard,
+} from "../boardsLabel/boardsLabel.utils.js";
 
 import { getBoardsWithLikesUserLabels } from "./boards.utils.js";
 
-async function getAllBoards() {
-  return await getBoardsWithLikesUserLabels();
+async function getAllBoards(userId) {
+
+  // initial query listing all boards
+  let query = Boards.find();
+
+  // apply userId filter if provided
+  if (userId !== undefined) {
+    // Check if any board exists for this userId
+    const exists = await Boards.exists({ userId });
+    if (!exists) {
+      throw new Error("No boards found for the provided userId.");
+    }
+
+    // filter boards by userId
+    query = query.where("userId").equals(userId);
+  }
+
+  // get only the _id of the boards matching the query
+  // to pass to getBoardsWithLikesUserLabels
+  const boards = await query.select("_id").exec();
+  const boardIds = boards.map((b) => b._id);
+
+  // If no filter, boardIds will be empty, so pass undefined to get all boards
+  return await getBoardsWithLikesUserLabels(
+    boardIds.length > 0 ? boardIds : undefined
+  );
 }
 
 async function createBoard(boardData) {

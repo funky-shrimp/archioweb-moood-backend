@@ -2,14 +2,23 @@ import mongoose from "mongoose";
 
 import BoardsModel from "./boards.model.js";
 
-async function getBoardsWithLikesUserLabels(boardId = null) {
+
+async function getBoardsWithLikesUserLabels(boardIdOrIds = null) {
   const pipeline = [];
 
-  // Add $match if boardId is provided
-  if (boardId) {
-    pipeline.push({
-      $match: { _id: new mongoose.Types.ObjectId(boardId) },
-    });
+  // Match stage based on whether boardIdOrIds is provided
+  if (boardIdOrIds) {
+    if (Array.isArray(boardIdOrIds)) {
+      // Array of IDs (from getAllBoards)
+      pipeline.push({
+        $match: { _id: { $in: boardIdOrIds.map(id => new mongoose.Types.ObjectId(id)) } },
+      });
+    } else {
+      // Single ID (from getBoardById)
+      pipeline.push({
+        $match: { _id: new mongoose.Types.ObjectId(boardIdOrIds) },
+      });
+    }
   }
 
   pipeline.push(
