@@ -1,4 +1,5 @@
 import Labels from "./label.model.js";
+import {unlinkLabelToBoards} from "../boardsLabel/boardsLabel.utils.js";
 
 //get labels, post labels, delete labels by id, get labels/:id/boards
 
@@ -12,6 +13,9 @@ async function createLabel(labelData) {
 }
 
 async function deleteLabel(labelId) {
+    //if label is linked to boards, we should unlink them first
+    await unlinkLabelToBoards(labelId);
+
     return Labels.findByIdAndDelete(labelId);
 }
 

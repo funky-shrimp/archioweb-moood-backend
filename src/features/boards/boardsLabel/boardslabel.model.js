@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const boardLabel = mongoose.Schema({
+const boardsLabels = mongoose.Schema({
     boardId:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Board',
@@ -13,4 +13,7 @@ const boardLabel = mongoose.Schema({
     }
 })
 
-export default mongoose.model('BoardsLabel', boardLabel);
+// Add a unique compound index for boardId and labelId
+boardsLabels.index({ boardId: 1, labelId: 1 }, { unique: true });
+
+export default mongoose.model('BoardsLabel', boardsLabels);

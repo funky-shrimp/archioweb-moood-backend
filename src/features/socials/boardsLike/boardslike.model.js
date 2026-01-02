@@ -19,4 +19,7 @@ const baordLikeSchema = new mongoose.Schema({
     },
 });
 
+// Add a unique compound index for userId and boardId
+baordLikeSchema.index({ userId: 1, boardId: 1 }, { unique: true });
+
 export default mongoose.model('BoardLike', baordLikeSchema);

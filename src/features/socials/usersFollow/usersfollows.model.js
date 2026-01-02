@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const userFollow = new mongoose.Schema({
+const usersFollow = new mongoose.Schema({
   followerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -17,4 +17,7 @@ const userFollow = new mongoose.Schema({
   },
 });
 
-export default mongoose.model("UserFollow",userFollow);
+// Add a unique compound index for followerId and followedId
+usersFollow.index({ followerId: 1, followedId: 1 }, { unique: true });
+
+export default mongoose.model("UserFollow",usersFollow);
