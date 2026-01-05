@@ -1,5 +1,6 @@
 import express from 'express';
 import * as commentsController from './comments.controller.js';
+import isOwner from '../../../middlewares/isOwner.middleware.js';
 
 const router = express.Router();
 

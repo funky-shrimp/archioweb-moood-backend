@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 
 import {boards} from "../features/boards/boards/index.js";
 import {comments} from "../features/socials/comments/index.js";
@@ -14,7 +15,7 @@ import {users} from "../features/socials/users/index.js";
 */
 
 const router = express.Router();
-
+router.use(cors());
 router.use("/auth", auth);
 router.use("/boards", boards);
 router.use("/comments", comments);
