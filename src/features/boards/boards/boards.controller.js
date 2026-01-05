@@ -1,8 +1,9 @@
 import { parse } from "dotenv";
 import * as boardsService from "./boards.service.js";
 import mongoose from "mongoose";
+import Board from "./boards.model.js";
 
-import { isUserBoardOwner, isUserAdmin } from "./boards.utils.js";
+import { isUserThingOwner, isUserAdmin } from "../../../middlewares/utils.middleware.js";
 
 async function getAllBoards(req, res, next) {
   try {
@@ -48,9 +49,10 @@ async function getBoardById(req, res, next) {
 
 async function updateBoard(req, res, next) {
   try {
-    const user = req.user;
+    const userId = req.user.id;
+    const boardId = req.params.id;
 
-    const isOwner = await isUserBoardOwner(req.params.id, user);
+    const isOwner = await isUserThingOwner(Board, boardId, userId);
     if (!isOwner) {
       const error = new Error("Unauthorized: Only the board owner can update this board.");
       error.status = 403;
@@ -66,9 +68,10 @@ async function updateBoard(req, res, next) {
 async function deleteBoard(req, res, next) {
   try {
     const userId = req.user.id;
+    const boardId = req.params.id;
     const userRole = req.user.role;
 
-    const isOwner = await isUserBoardOwner(req.params.id, userId);
+    const isOwner = await isUserThingOwner(Board, boardId, userId);
     const isAdmin = await isUserAdmin(userRole);
 
     //if user is not owner, he has to be admin to delete the board

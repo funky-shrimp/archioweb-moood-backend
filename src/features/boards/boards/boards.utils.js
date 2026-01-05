@@ -74,17 +74,5 @@ async function getBoardsWithLikesUserLabels(boardIdOrIds = null) {
   return await BoardsModel.aggregate(pipeline).exec();
 }
 
-async function isUserBoardOwner(boardId, userId) {
-  const board = await BoardsModel.findOne({ _id: boardId, userId: userId }).exec();
-  if (!board) {
-    return false;
-  }
-  return true;
-}
 
-async function isUserAdmin(userRole) {
-  return userRole === 'admin';
-}
-
-
-export { getBoardsWithLikesUserLabels, isUserBoardOwner, isUserAdmin };
+export { getBoardsWithLikesUserLabels };
