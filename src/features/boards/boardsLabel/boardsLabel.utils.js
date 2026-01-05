@@ -1,5 +1,5 @@
 import Labels from "../labels/label.model.js";
-import BoardsLabel from "./boardsLabel.model.js";
+import BoardsLabel from "./boardslabel.model.js";
 import { createLabel } from "../labels/labels.service.js";
 import { createLabelBoardLink } from "./boardsLabel.service.js";
 
