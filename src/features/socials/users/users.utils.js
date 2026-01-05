@@ -1,5 +1,5 @@
 import Boards from "../../boards/boards/boards.model.js";
-import UsersFollow from "../usersFollow/usersFollows.model.js";
+import UsersFollow from "../usersFollow/usersfollows.model.js";
 
 /**
  * retrieve all board IDs created by a specific user
