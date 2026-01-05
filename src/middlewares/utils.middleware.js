@@ -18,4 +18,4 @@ async function isUserAdmin(userRole) {
   return userRole === 'admin';
 }
 
-export { isUserThingOwner, isUserAdmin };
+export { isUserThingOwner, isUserAdmin};
