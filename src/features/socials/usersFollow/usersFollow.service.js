@@ -1,4 +1,4 @@
-import usersFollow from "./usersFollows.model.js";
+import usersFollow from "./usersfollows.model.js";
 
 async function createFollow(usersFollowData) {
   const newFollow = new usersFollow(usersFollowData);
