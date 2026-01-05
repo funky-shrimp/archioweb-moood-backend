@@ -10,6 +10,14 @@ const router = express.Router();
  *   post:
  *     summary: Follow a user
  *     tags: [usersFollow]
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     requestBody:
  *       $ref: '#/components/requestBodies/UsersFollowBody'
  *     responses:
@@ -35,6 +43,8 @@ router.post('/', usersFollow.createFollow);
  *   delete:
  *     summary: Unfollow a user
  *     tags: [usersFollow]
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     parameters:
  *       - $ref: '#/components/parameters/FollowedId'
  *     requestBody:

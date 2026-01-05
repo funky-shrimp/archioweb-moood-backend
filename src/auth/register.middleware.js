@@ -8,7 +8,7 @@ export default async function register(req, res, next) {
         // Validation des champs requis
         if (!username || !email || !password) {
             return res.status(400).json({
-                error: "Username, email et password sont requis"
+                error: "Username, email and password required"
             });
         }
 
@@ -19,7 +19,7 @@ export default async function register(req, res, next) {
 
         if (existingUser) {
             return res.status(409).json({
-                error: "Cet email ou username est déjà utilisé"
+                error: "Email or username already in use"
             });
         }
 
@@ -47,7 +47,7 @@ export default async function register(req, res, next) {
     } catch (error) {
         console.error("Erreur lors de l'enregistrement:", error);
         res.status(500).json({
-            error: "Erreur serveur lors de la création du compte"
+            error: "Error registering user"
         });
     }
 }

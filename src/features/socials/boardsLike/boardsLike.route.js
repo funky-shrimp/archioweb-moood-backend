@@ -10,6 +10,14 @@ const router = express.Router();
  *   post:
  *     summary: Like a board
  *     tags: [boardsLike]
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     requestBody:
  *       $ref: '#/components/requestBodies/BoardsLikeBody'
  *     responses:
@@ -35,6 +43,8 @@ router.post('/', boardsLike.createBoardsLike);
  *   delete:
  *     summary: Unlike a board
  *     tags: [boardsLike]
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     parameters:
  *       - $ref: '#/components/parameters/BoardId'
  *     requestBody:

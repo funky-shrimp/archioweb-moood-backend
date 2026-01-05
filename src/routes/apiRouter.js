@@ -30,20 +30,20 @@ const options = {
         url: "http://localhost:3000/api",
         description: "Local server",
       },
+      {
+        url:"https://archioweb-moood-backend.onrender.com/api",
+        description: "Production server",
+      }
     ],
     // These are used to group endpoints in the sidebar
     tags: [
       {
+        name: "auth",
+        description: "All APIs related to /auth/ endpoints.",
+      },
+      {
         name: "boards",
         description: "All APIs related to the /boards/ endpoints.",
-      },
-      {
-        name: "labels",
-        description: "All APIs related to the /labels/ endpoints.",
-      },
-      {
-        name: "elements",
-        description: "All APIs related to the /elements/ endpoints.",
       },
       {
         name: "comments",
@@ -61,6 +61,14 @@ const options = {
         name: "usersFollow",
         description: "All APIs related to the /usersFollow/ endpoints.",
       },
+      {
+        name: "labels",
+        description: "All APIs related to the /labels/ endpoints.",
+      },
+      {
+        name: "elements",
+        description: "All APIs related to the /elements/ endpoints.",
+      },
     ],
   },
   apis: ["./src/features/**/**/*.route.js", "./src/auth/auth.route.js"], //files with *.route.js
@@ -71,6 +79,9 @@ const swaggerSpec = swaggerJSDoc(options);
 router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 router.use("/auth", auth);
+
+//Route protection with JWT authentication middleware
+// Users and admins must be logged in to access the routes below
 router.use("/boards", authenticateJWT, boards);
 router.use("/comments", authenticateJWT, comments);
 router.use("/labels", authenticateJWT, labels);

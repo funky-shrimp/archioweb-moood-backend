@@ -10,6 +10,14 @@ const router = express.Router();
  *   get:
  *     summary: Get all users
  *     tags: [users]
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     responses:
  *       200:
  *         $ref: '#/components/responses/UserList'
@@ -22,6 +30,8 @@ router.get('/', usersController.getAllUsers);
  *   get:
  *     summary: Get a user by ID
  *     tags: [users]
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     parameters:
  *       - $ref: '#/components/parameters/UserId'
  *     responses:
