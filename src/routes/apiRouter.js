@@ -30,6 +30,10 @@ const options = {
         url: 'http://localhost:3000/api',
         description: 'Local server',
         },
+        {
+        url: 'https://archioweb-moood-backend.onrender.com/api/',
+        description: 'Production server',
+        },
     ],
     // These are used to group endpoints in the sidebar
     tags: [
