@@ -1,11 +1,13 @@
 import { parse } from "dotenv";
 import * as boardsService from "./boards.service.js";
 import mongoose from "mongoose";
+import Board from "./boards.model.js";
+
+import { isUserThingOwner, isUserAdmin } from "../../../middlewares/utils.middleware.js";
 
 async function getAllBoards(req, res, next) {
   try {
-
-    // validate userId if provided in the query parameters 
+    // validate userId if provided in the query parameters
     let userId = undefined;
 
     let limit = parseInt(req.query.limit) || 2;
@@ -19,16 +21,17 @@ async function getAllBoards(req, res, next) {
       }
     }
 
-
     res.json(await boardsService.getAllBoards(userId, { limit, cursor }));
   } catch (err) {
     next(err);
   }
 }
 
-
 async function createBoard(req, res, next) {
   try {
+    const userId = req.user.id;
+    req.body.userId = userId;
+
     res.json(await boardsService.createBoard(req.body));
   } catch (err) {
     next(err);
@@ -46,7 +49,16 @@ async function getBoardById(req, res, next) {
 
 async function updateBoard(req, res, next) {
   try {
-    console.log("Updating board with ID:", req.params.id, "with data:", req.body);
+    const userId = req.user.id;
+    const boardId = req.params.id;
+
+    const isOwner = await isUserThingOwner(Board, boardId, userId);
+    if (!isOwner) {
+      const error = new Error("Unauthorized: Only the board owner can update this board.");
+      error.status = 403;
+      throw error;
+    }
+
     res.json(await boardsService.updateBoard(req.params.id, req.body));
   } catch (err) {
     next(err);
@@ -55,6 +67,22 @@ async function updateBoard(req, res, next) {
 
 async function deleteBoard(req, res, next) {
   try {
+    const userId = req.user.id;
+    const boardId = req.params.id;
+    const userRole = req.user.role;
+
+    const isOwner = await isUserThingOwner(Board, boardId, userId);
+    const isAdmin = await isUserAdmin(userRole);
+
+    //if user is not owner, he has to be admin to delete the board
+    if (!isOwner && !isAdmin) {
+      const error = new Error(
+        "Unauthorized: Only the board owner or an admin can delete this board."
+      );
+      error.status = 403;
+      throw error;
+    }
+
     res.json(await boardsService.deleteBoard(req.params.id));
   } catch (err) {
     next(err);
@@ -69,4 +97,11 @@ async function getCommentsByBoardId(req, res, next) {
   }
 }
 
-export {getAllBoards, createBoard, getBoardById, updateBoard, deleteBoard, getCommentsByBoardId};
+export {
+  getAllBoards,
+  createBoard,
+  getBoardById,
+  updateBoard,
+  deleteBoard,
+  getCommentsByBoardId,
+};

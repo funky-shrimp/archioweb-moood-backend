@@ -1,3 +1,4 @@
+
 import express from 'express';
 import * as labelsController from './labels.controller.js';
 
@@ -6,10 +7,20 @@ const router = express.Router();
 
 /**
  * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  * /labels:
  *   get:
  *     summary: Get all labels
  *     tags: [labels]
+ *     description: |
+ *       Only authenticated users can access this endpoint. No admin restriction.
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     responses:
  *       200:
  *         $ref: '#/components/responses/LabelList'
@@ -22,17 +33,37 @@ router.get('/', labelsController.getAllLabels);
  *   post:
  *     summary: Create a new label
  *     tags: [labels]
+ *     description: |
+ *       Only admins can create labels.
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
- *             $ref: '#/components/schemas/Label'
+ *             type: object
+ *             required:
+ *               - name
+ *             properties:
+ *               name:
+ *                 type: string
+ *                 maxLength: 20
  *           example:
  *             name: "Urgent"
  *     responses:
  *       201:
  *         $ref: '#/components/responses/Label'
+ *       403:
+ *         description: Only admins can create labels
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unauthorized: Only admins can create labels"
  */
 router.post('/', labelsController.createLabel);
 
@@ -42,6 +73,10 @@ router.post('/', labelsController.createLabel);
  *   delete:
  *     summary: Delete a label by ID
  *     tags: [labels]
+ *     description: |
+ *       Only admins can delete labels.
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     parameters:
  *       - $ref: '#/components/parameters/LabelId'
  *     responses:
@@ -54,6 +89,16 @@ router.post('/', labelsController.createLabel);
  *             example:
  *               _id: "5f8d0d55b54764421b7156c1"
  *               name: "Urgent"
+ *       403:
+ *         description: Only admins can delete labels
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unauthorized: Only admins can delete labels"
  */
 router.delete('/:labelId', labelsController.deleteLabel);
 

@@ -10,6 +10,14 @@ const router = express.Router();
  *   get:
  *     summary: Get all elements
  *     tags: [elements]
+ *     components:
+ *       securitySchemes:
+ *         bearerAuth:
+ *           type: http
+ *           scheme: bearer
+ *           bearerFormat: JWT
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     responses:
  *       200:
  *         $ref: '#/components/responses/ElementList'
@@ -22,6 +30,8 @@ router.get('/', elementsController.getElements);
  *   post:
  *     summary: Create a new element
  *     tags: [elements]
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     requestBody:
  *       $ref: '#/components/requestBodies/ElementBody'
  *     responses:
@@ -36,6 +46,8 @@ router.post('/', elementsController.createElement);
  *   put:
  *     summary: Update an element
  *     tags: [elements]
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     parameters:
  *       - $ref: '#/components/parameters/ElementId'
  *     requestBody:
@@ -52,6 +64,8 @@ router.put('/:elementId', elementsController.updateElement);
  *   delete:
  *     summary: Delete an element
  *     tags: [elements]
+ *     security:
+ *       - bearerAuth: [] # JWT Token
  *     parameters:
  *       - $ref: '#/components/parameters/ElementId'
  *     responses:
