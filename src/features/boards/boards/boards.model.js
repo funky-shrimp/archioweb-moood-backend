@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 
 const limitations = {
-    titleMaxLength: 30,
-    descriptionMaxLength: 200,
+  titleMaxLength: 30,
+  descriptionMaxLength: 200,
 };
 
 //title, description, creator, isPublic, createdAt
@@ -16,7 +16,8 @@ const boardSchema = new mongoose.Schema({
         // limited bio to 30 characters
         return v.length <= limitations.titleMaxLength;
       },
-      message: (props) => `Title is above ${limitations.titleMaxLength} characters!`,
+      message: (props) =>
+        `Title is above ${limitations.titleMaxLength} characters!`,
     },
   },
   description: {
@@ -27,12 +28,17 @@ const boardSchema = new mongoose.Schema({
         // limited bio to 30 characters
         return v.length <= limitations.descriptionMaxLength;
       },
-      message: (props) => `Description is above ${limitations.descriptionMaxLength}  characters!`,
+      message: (props) =>
+        `Description is above ${limitations.descriptionMaxLength}  characters!`,
     },
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
+    required: true,
+  },
+  imageUrl: {
+    type: String,
     required: true,
   },
   isPublic: {

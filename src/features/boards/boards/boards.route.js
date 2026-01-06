@@ -59,6 +59,9 @@ const router = express.Router();
  *         userId:
  *           type: string
  *           description: User ID
+ *         imageUrl:
+ *           type: string
+ *           description: Base64 encoded image string
  *         isPublic:
  *           type: boolean
  *         createdAt:
@@ -103,6 +106,7 @@ const router = express.Router();
  *               title: "My First Board"
  *               description: "Incredible board description"
  *               userId: "60c72b2f9b1d8c001c8e4b8a"
+ *               imageUrl: "iVBORw0KGgoAAAANSUhEUgAA..."
  *               isPublic: true
  *               createdAt: "2023-10-01T12:00:00Z"
  *     Board:
@@ -116,6 +120,7 @@ const router = express.Router();
  *             title: "My New Board"
  *             description: "A description for the new board"
  *             userId: "60c72b2f9b1d8c001c8e4b8a"
+ *             imageUrl: "iVBORw0KGgoAAAANSUhEUgAA..."
  *             isPublic: true
  *             createdAt: "2023-10-01T12:00:00Z"
  */
