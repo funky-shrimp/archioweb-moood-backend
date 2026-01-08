@@ -61,8 +61,6 @@ async function getAllBoards(userId, { limit = 20, cursor = null } = {}) {
 async function createBoard(boardData) {
   let labelsIds = [];
 
-  console.log("Creating board with data:", boardData);
-
   //check if label is added in boardData
   if (boardData.labels && boardData.labels.length > 0) {
     labelsIds = await checkLabelExists(boardData.labels);

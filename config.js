@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
 
-dotenv.config();
+dotenv.config({quiet:true});
 
 // Port de connection à l'APP
 export const port = process.env.PORT || 3000;

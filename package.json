@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node ./bin/start",
-    "dev": "set DEBUG=express-api:* && nodemon"
+    "dev": "set DEBUG=express-api:* && nodemon",
+    "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/api-test node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --detectOpenHandles"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
@@ -19,8 +20,15 @@
     "swagger-ui-express": "^5.0.1"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "dotenv": "^17.2.3",
     "jest": "^30.2.0",
-    "nodemon": "^3.1.10"
+    "jest-extended": "^7.0.0",
+    "nodemon": "^3.1.10",
+    "supertest": "^7.2.2"
+  }
+  ,
+  "jest": {
+    "setupFilesAfterEnv": ["jest-extended/all"]
   }
 }

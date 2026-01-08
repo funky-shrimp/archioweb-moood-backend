@@ -13,6 +13,10 @@ async function getAllBoards(req, res, next) {
     let limit = parseInt(req.query.limit) || 2;
     let cursor = req.query.cursor || null;
 
+    //todo : validate limit and cursor values
+    // limit -> >1 and <=20
+    // cursor -> valid ObjectId, (existing in the database?)
+
     if (req.query.userId) {
       if (mongoose.Types.ObjectId.isValid(req.query.userId)) {
         userId = req.query.userId;
