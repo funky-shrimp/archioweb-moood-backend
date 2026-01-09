@@ -16,6 +16,12 @@ async function getAllBoards(req, res, next) {
     //todo : validate limit and cursor values
     // limit -> >1 and <=20
     // cursor -> valid ObjectId, (existing in the database?)
+    if (limit < 1) limit = 2;
+    if (limit > 20) limit = 20;
+
+    if (cursor && !mongoose.Types.ObjectId.isValid(cursor)) {
+      throw new Error("Invalid cursor");
+    }
 
     if (req.query.userId) {
       if (mongoose.Types.ObjectId.isValid(req.query.userId)) {
@@ -44,7 +50,7 @@ async function createBoard(req, res, next) {
 
 async function getBoardById(req, res, next) {
   try {
-    console.log("Fetching board with ID:", req.params.id);
+    //console.log("Fetching board with ID:", req.params.id);
     res.json(await boardsService.getBoardById(req.params.id));
   } catch (err) {
     next(err);

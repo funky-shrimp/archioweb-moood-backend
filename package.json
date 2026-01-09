@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node ./bin/start",
     "dev": "set DEBUG=express-api:* && nodemon",
-    "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/api-test node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --detectOpenHandles"
+    "test": "cross-env DATABASE_URL=mongodb://127.0.0.1/api-test node --experimental-vm-modules node_modules/jest/bin/jest.js --runInBand --detectOpenHandles --verbose"
   },
   "dependencies": {
     "bcrypt": "^6.0.0",
