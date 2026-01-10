@@ -171,6 +171,8 @@ router.get("/", boardsController.getAllBoards);
  *               description:
  *                 type: string
  *                 maxLength: 200
+ *               imageUrl:
+ *                 type: string
  *               isPublic:
  *                 type: boolean
  *           example:

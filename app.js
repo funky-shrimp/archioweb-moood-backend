@@ -1,4 +1,5 @@
 import express from "express";
+import {wsServer} from "./src/websocket/wsServer.js";
 import createError from "http-errors";
 import logger from "morgan";
 import mongoose from "mongoose";
@@ -10,6 +11,8 @@ import indexRouter from "./src/routes/index.js";
 import apiRouter from "./src/routes/apiRouter.js";
 
 const app = express();
+
+wsServer.start();
 
 mongoose.connect(config.database_url || "mongdb://localhost/your-app-name").catch((err) => {
   console.error("MongoDB connection error:", err);
