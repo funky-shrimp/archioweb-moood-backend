@@ -1,6 +1,7 @@
 import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
+import cors from "cors";
 
 import { authenticateJWT } from "../auth/JWT/auth.jwt.middleware.js";
 
@@ -77,7 +78,7 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+router.use(cors());
 router.use("/auth", auth);
 
 //Route protection with JWT authentication middleware
