@@ -1,6 +1,7 @@
 import express from "express";
 import swaggerUi from 'swagger-ui-express';
 import swaggerJSDoc from "swagger-jsdoc";
+import cors from "cors";
 
 
 import {boards} from "../features/boards/boards/index.js";
@@ -73,7 +74,7 @@ const options = {
 const swaggerSpec = swaggerJSDoc(options);
 
 router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
+router.use(cors());
 router.use("/auth", auth);
 router.use("/boards", boards);
 router.use("/comments", comments);
