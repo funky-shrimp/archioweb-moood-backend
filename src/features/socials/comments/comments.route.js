@@ -6,49 +6,6 @@ const router = express.Router();
 
 /**
  * @swagger
- * /comments:
- *   post:
- *     summary: Create a new comment
- *     tags: [comments]
- *     description: |
- *       Only authenticated users can create comments.
- *     components:
- *       securitySchemes:
- *         bearerAuth:
- *           type: http
- *           scheme: bearer
- *           bearerFormat: JWT
- *     security:
- *       - bearerAuth: [] # JWT Token
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - boardId
- *               - content
- *             properties:
- *               boardId:
- *                 type: string
- *               parentCommentId:
- *                 type: string
- *                 nullable: true
- *               content:
- *                 type: string
- *           example:
- *             boardId: "69245b51506e0a66ed3087ce"
- *             parentCommentId: null
- *             content: "Sausage"
- *     responses:
- *       201:
- *         $ref: '#/components/responses/Comment'
- */
-router.post('/', commentsController.createComment);
-
-/**
- * @swagger
  * /comments/{id}:
  *   delete:
  *     summary: Delete a comment by ID

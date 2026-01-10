@@ -11,9 +11,13 @@ import {
 
 // Create a new comment
 async function createComment(req, res, next) {
+  console.log("Creating comment with body:", req.body);
   try {
     const userId = req.user.id;
     req.body.userId = userId;
+
+    const boardId = req.params.id;
+    req.body.boardId = boardId;
 
     res.json(await commentsService.createComment(req.body));
   } catch (error) {

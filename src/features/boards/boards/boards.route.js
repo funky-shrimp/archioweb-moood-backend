@@ -1,5 +1,6 @@
 import express from "express";
 import * as boardsController from "./boards.controller.js";
+import { createComment } from "../../socials/comments/comments.controller.js";
 
 const router = express.Router();
 
@@ -181,6 +182,73 @@ router.get("/", boardsController.getAllBoards);
  *         $ref: '#/components/responses/Board'
  */
 router.post("/", boardsController.createBoard);
+
+
+
+/**
+ * @swagger
+ * /boards/{id}/comments:
+ *   post:
+ *     summary: Create a new comment on a board
+ *     tags: [boards]
+ *     description: |
+ *       Only authenticated users can create comments. The userId is taken from the JWT token, and boardId from the path parameter.
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The board ID to comment on
+ *         example: "69245b51506e0a66ed3087ce"
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - content
+ *             properties:
+ *               content:
+ *                 type: string
+ *               parentCommentId:
+ *                 type: string
+ *                 nullable: true
+ *           example:
+ *             content: "This is a comment."
+ *             parentCommentId: null
+ *     responses:
+ *       201:
+ *         description: Comment created
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Comment'
+ *             example:
+ *               _id: "692dec694bab9fa4d9434d3f"
+ *               userId: "692dc617cc95bd5ca6bff2b8"
+ *               boardId: "69245b51506e0a66ed3087ce"
+ *               parentCommentId: null
+ *               content: "This is a comment."
+ *               createdAt: "2025-12-01T19:28:41.566Z"
+ *               __v: 0
+ *               authorName: "funkyshrimp"
+ *       400:
+ *         description: Invalid input
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *             example:
+ *               error: "Content is required."
+ */
+router.post("/:id/comments",createComment);
 
 /**
  * @swagger
