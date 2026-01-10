@@ -1,7 +1,8 @@
 import Users from "../users/users.model.js";
+import Comment from "./comment.model.js";
 
 // Accepts a single comment or an array of comments
-export async function addAuthorToComment(commentOrArray) {
+async function addAuthorToComment(commentOrArray) {
   /*
       Mongoose documents only serialize properties defined in the schema.
 When you add a new property (like authorName) directly to a Mongoose document, it won’t appear in the JSON output unless you first convert the document to a plain object using .toObject() or .lean().
@@ -27,3 +28,10 @@ Mongoose documents have internal mechanisms for tracking schema fields and virtu
     return commentObj;
   }
 }
+
+async function getCommentBoardId(commentId) {
+  const comment = await Comment.findById(commentId).select("boardId");
+  return comment ? comment.boardId : null;
+}
+
+export { addAuthorToComment, getCommentBoardId };

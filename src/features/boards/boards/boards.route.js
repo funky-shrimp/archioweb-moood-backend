@@ -6,6 +6,11 @@ const router = express.Router();
 /**
  * @swagger
  * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
  *   parameters:
  *     BoardId:
  *       in: path
@@ -54,6 +59,9 @@ const router = express.Router();
  *         userId:
  *           type: string
  *           description: User ID
+ *         imageUrl:
+ *           type: string
+ *           description: Base64 encoded image string
  *         isPublic:
  *           type: boolean
  *         createdAt:
@@ -97,7 +105,8 @@ const router = express.Router();
  *             - id: "60d21b4667d0d8992e610c85"
  *               title: "My First Board"
  *               description: "Incredible board description"
- *               creator: "60c72b2f9b1d8c001c8e4b8a"
+ *               userId: "60c72b2f9b1d8c001c8e4b8a"
+ *               imageUrl: "iVBORw0KGgoAAAANSUhEUgAA..."
  *               isPublic: true
  *               createdAt: "2023-10-01T12:00:00Z"
  *     Board:
@@ -110,7 +119,8 @@ const router = express.Router();
  *             id: "60d21b4667d0d8992e610c85"
  *             title: "My New Board"
  *             description: "A description for the new board"
- *             creator: "60c72b2f9b1d8c001c8e4b8a"
+ *             userId: "60c72b2f9b1d8c001c8e4b8a"
+ *             imageUrl: "iVBORw0KGgoAAAANSUhEUgAA..."
  *             isPublic: true
  *             createdAt: "2023-10-01T12:00:00Z"
  */
@@ -121,6 +131,10 @@ const router = express.Router();
  *   get:
  *     summary: Retrieve a list of boards
  *     tags: [boards]
+ *     description: |
+ *       Only authenticated users can access this endpoint. No admin restriction.
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - $ref: '#/components/parameters/UserIdQuery'
  *       - $ref: '#/components/parameters/LimitQuery'
@@ -137,6 +151,10 @@ router.get("/", boardsController.getAllBoards);
  *   post:
  *     summary: Create a new board
  *     tags: [boards]
+ *     description: |
+ *       Only authenticated users can create boards. The board will be associated with the authenticated user (author). The userId/author is not required in the request body.
+ *     security:
+ *       - bearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -145,7 +163,6 @@ router.get("/", boardsController.getAllBoards);
  *             type: object
  *             required:
  *               - title
- *               - creator
  *             properties:
  *               title:
  *                 type: string
@@ -153,15 +170,11 @@ router.get("/", boardsController.getAllBoards);
  *               description:
  *                 type: string
  *                 maxLength: 200
- *               creator:
- *                 type: string
- *                 description: User ID
  *               isPublic:
  *                 type: boolean
  *           example:
  *             title: "My New Board"
  *             description: "A description for the new board"
- *             creator: "60c72b2f9b1d8c001c8e4b8a"
  *             isPublic: true
  *     responses:
  *       201:
@@ -175,6 +188,10 @@ router.post("/", boardsController.createBoard);
  *   get:
  *     summary: Get a board by ID
  *     tags: [boards]
+ *     description: |
+ *       Only authenticated users can access this endpoint. No admin restriction.
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - $ref: '#/components/parameters/BoardId'
  *     responses:
@@ -189,6 +206,10 @@ router.get("/:id", boardsController.getBoardById);
  *   put:
  *     summary: Update a board
  *     tags: [boards]
+ *     description: |
+ *       Only the board owner can update the board. Admins cannot update boards they do not own. Authenticated non-owners will receive a 403 error.
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - $ref: '#/components/parameters/BoardId'
  *     requestBody:
@@ -213,6 +234,16 @@ router.get("/:id", boardsController.getBoardById);
  *     responses:
  *       200:
  *         $ref: '#/components/responses/Board'
+ *       403:
+ *         description: Only the board owner can update this board
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unauthorized: Only the board owner can update this board."
  */
 router.put("/:id", boardsController.updateBoard);
 
@@ -222,11 +253,25 @@ router.put("/:id", boardsController.updateBoard);
  *   delete:
  *     summary: Delete a board
  *     tags: [boards]
+ *     description: |
+ *       Only the board owner or an admin can delete a board. Authenticated non-owners/non-admins will receive a 403 error.
+ *     security:
+ *       - bearerAuth: []
  *     parameters:
  *       - $ref: '#/components/parameters/BoardId'
  *     responses:
  *       204:
  *         description: Board deleted
+ *       403:
+ *         description: Only the board owner or an admin can delete this board
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Unauthorized: Only the board owner or an admin can delete this board."
  */
 router.delete("/:id", boardsController.deleteBoard);
 
@@ -236,6 +281,8 @@ router.delete("/:id", boardsController.deleteBoard);
  *   get:
  *     summary: Get comments for a board
  *     tags: [boards]
+ *     description: |
+ *       Only authenticated users can access this endpoint. No admin restriction.
  *     parameters:
  *       - $ref: '#/components/parameters/BoardId'
  *     responses:
@@ -249,7 +296,6 @@ router.delete("/:id", boardsController.deleteBoard);
  *                 $ref: '#/components/schemas/Comment'
  *             example:
  *               - _id: "692dec694bab9fa4d9434d3f"
- *                 userId: "692dc617cc95bd5ca6bff2b8"
  *                 boardId: "69245b51506e0a66ed3087ce"
  *                 parentCommentId: null
  *                 content: "Sausage"

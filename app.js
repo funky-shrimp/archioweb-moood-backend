@@ -16,13 +16,10 @@ mongoose.connect(config.database_url || "mongdb://localhost/your-app-name").catc
 });
 
 
+if (process.env.NODE_ENV !== 'test') {
+  app.use(logger('dev'));
+}
 
-app.use(function myMiddleware(req, res, next) {
-  console.log('Hello World!');
-  next();
-});
-
-app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
