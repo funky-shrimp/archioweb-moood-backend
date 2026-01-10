@@ -2,6 +2,7 @@ import express from "express";
 import swaggerUi from "swagger-ui-express";
 import swaggerJSDoc from "swagger-jsdoc";
 import cors from "cors";
+import { origin_frontend } from "../../config.js";
 
 import { authenticateJWT } from "../auth/JWT/auth.jwt.middleware.js";
 
@@ -32,9 +33,9 @@ const options = {
         description: "Local server",
       },
       {
-        url:"https://archioweb-moood-backend.onrender.com/api",
+        url: "https://archioweb-moood-backend.onrender.com/api",
         description: "Production server",
-      }
+      },
     ],
     // These are used to group endpoints in the sidebar
     tags: [
@@ -77,8 +78,14 @@ const options = {
 
 const swaggerSpec = swaggerJSDoc(options);
 
+// CORS options
+let corsOptions = {
+  origin: origin_frontend,
+  optionsSuccessStatus: 200,
+};
+
 router.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-router.use(cors());
+router.use(cors(corsOptions));
 router.use("/auth", auth);
 
 //Route protection with JWT authentication middleware

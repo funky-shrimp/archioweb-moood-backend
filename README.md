@@ -66,6 +66,7 @@ This is the backend repository. You can find the [frontend here](https://github.
 | DATABASE_URL  | MongoDB connection string   |
 | PORT          | Server port (default: 3000) |
 | JWT_SECRET    | Secret for JWT signing      |
+| ORIGIN_FRONTEND    | Frontend cors allowed origin      |
 
 ## Project Structure
 
