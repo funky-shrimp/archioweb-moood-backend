@@ -87,6 +87,40 @@ The project structure was based on this [article](https://fadamakis.com/express-
 - `npm run dev` — Start in development mode with nodemon
 - `npm start` — Start in production mode
 
+## Testing the API
+
+Automated tests are written using [Jest](https://jestjs.io/) and [Supertest](https://github.com/ladjs/supertest).
+
+Test files are located in the `src/spec/` directory and cover authentication, boards, and utilities.
+
+### Running Tests
+
+1. Make sure you have a local MongoDB instance running (the default test database is `mongodb://127.0.0.1/api-test`).
+2. Run the test suite:
+    ```sh
+    npm test
+    ```
+
+### Writing Tests
+
+- Add new test files in `src/spec/` following the pattern `<feature>.spec.js`.
+- Use Jest for assertions and Supertest for HTTP requests against the Express app.
+- Example:
+   ```js
+   // src/spec/example.spec.js
+   import request from 'supertest';
+   import app from '../../app.js';
+
+   describe('Example API', () => {
+      it('should return 200 for GET /api', async () => {
+         const res = await request(app).get('/api');
+         expect(res.statusCode).toBe(200);
+      });
+   });
+   ```
+
+Test configuration and setup can be customized in `package.json` and with environment variables as needed.
+
 ## API Documentation
 
 - API routes are defined under `/api/docs`.
