@@ -1,63 +1,25 @@
-import express from 'express';
-import * as usersFollow from './usersFollow.controller.js';
-
+import express from "express";
+import * as usersFollow from "./usersFollow.controller.js";
 
 const router = express.Router();
 
 /**
  * @swagger
- * /usersFollow:
- *   post:
- *     summary: Follow a user
- *     tags: [usersFollow]
- *     components:
- *       securitySchemes:
- *         bearerAuth:
- *           type: http
- *           scheme: bearer
- *           bearerFormat: JWT
- *     security:
- *       - bearerAuth: [] # JWT Token
- *     requestBody:
- *       $ref: '#/components/requestBodies/UsersFollowBody'
- *     responses:
- *       201:
- *         $ref: '#/components/responses/UsersFollow'
- *       400:
- *         description: Already following
- *         content:
- *           application/json:
- *             schema:
- *               type: object
- *               properties:
- *                 message:
- *                   type: string
- *             example:
- *               message: "You already follow this user."
- */
-router.post('/', usersFollow.createFollow);
-
-/**
- * @swagger
- * /usersFollow/{id}:
- *   delete:
- *     summary: Unfollow a user
- *     tags: [usersFollow]
- *     security:
- *       - bearerAuth: [] # JWT Token
- *     parameters:
- *       - $ref: '#/components/parameters/FollowedId'
- *     requestBody:
- *       $ref: '#/components/requestBodies/UsersFollowDeleteBody'
- *     responses:
- *       200:
- *         $ref: '#/components/responses/UsersFollowDeleted'
- */
-router.delete('/:id', usersFollow.deleteFollow);
-
-/**
- * @swagger
  * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ *   parameters:
+ *     FollowedIdPath:
+ *       in: path
+ *       name: id
+ *       required: true
+ *       schema:
+ *         type: string
+ *       description: The user ID to follow
+ *       example: "69245b51506e0a66ed3087ce"
  *   schemas:
  *     UsersFollow:
  *       type: object
@@ -94,45 +56,55 @@ router.delete('/:id', usersFollow.deleteFollow);
  *                 type: string
  *           example:
  *             message: "User follow deleted successfully."
- *   parameters:
- *     FollowedId:
- *       in: path
- *       name: id
- *       required: true
- *       schema:
- *         type: string
- *       description: The followed user ID
- *   requestBodies:
- *     UsersFollowBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - followerId
- *               - followedId
- *             properties:
- *               followerId:
- *                 type: string
- *               followedId:
- *                 type: string
- *           example:
- *             followerId: "692dc617cc95bd5ca6bff2b8"
- *             followedId: "69245b51506e0a66ed3087ce"
- *     UsersFollowDeleteBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - followerId
- *             properties:
- *               followerId:
- *                 type: string
- *           example:
- *             followerId: "692dc617cc95bd5ca6bff2b8"
  */
+
+/**
+ * @swagger
+ * /usersFollow/{id}:
+ *   post:
+ *     summary: Follow a user
+ *     tags: [usersFollow]
+ *     security:
+ *       - bearerAuth: [] # JWT Token
+ *     parameters:
+ *       - $ref: '#/components/parameters/FollowedIdPath'
+ *     requestBody:
+ *       description: No body required. The followerId is taken from the JWT token, and followedId from the path parameter.
+ *       required: false
+ *     responses:
+ *       201:
+ *         $ref: '#/components/responses/UsersFollow'
+ *       400:
+ *         description: Already following
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *             example:
+ *               message: "You already follow this user."
+ */
+router.post("/:id", usersFollow.createFollow);
+
+/**
+ * @swagger
+ * /usersFollow/{id}:
+ *   delete:
+ *     summary: Unfollow a user
+ *     tags: [usersFollow]
+ *     security:
+ *       - bearerAuth: [] # JWT Token
+ *     parameters:
+ *       - $ref: '#/components/parameters/FollowedIdPath'
+ *     requestBody:
+ *       description: No body required. The followerId is taken from the JWT token, and followedId from the path parameter.
+ *       required: false
+ *     responses:
+ *       200:
+ *         $ref: '#/components/responses/UsersFollowDeleted'
+ */
+router.delete("/:id", usersFollow.deleteFollow);
 
 export default router;

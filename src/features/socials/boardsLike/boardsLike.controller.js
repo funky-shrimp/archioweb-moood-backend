@@ -2,8 +2,8 @@ import * as boardsLike from "./boardsLike.service.js";
 
 async function createBoardsLike(req, res, next) {
   try {
-    let userId = req.body.userId;
-    let boardId = req.body.boardId;
+    const userId = req.user.id;
+    const boardId = req.params.id;
 
     res.json(await boardsLike.createBoardsLike({ userId, boardId }));
   } catch (err) {
@@ -18,8 +18,8 @@ async function createBoardsLike(req, res, next) {
 
 async function deleteBoardsLike(req, res, next) {
   try {
-    let userId = req.body.userId;
-    let boardId = req.params.id;
+    const userId = req.user.id;
+    const boardId = req.params.id;
 
     res.json(await boardsLike.deleteBoardsLike(userId, boardId));
   } catch (err) {

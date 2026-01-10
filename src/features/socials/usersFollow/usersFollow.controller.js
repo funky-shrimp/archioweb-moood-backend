@@ -2,8 +2,8 @@ import * as usersFollow from "./usersFollow.service.js";
 
 async function createFollow(req, res, next) {
   try {
-    let followerId = req.body.followerId;
-    let followedId = req.body.followedId;
+    const followerId = req.user.id;
+    const followedId = req.params.id;
 
     res.json(await usersFollow.createFollow({ followerId, followedId }));
   } catch (err) {
@@ -18,8 +18,8 @@ async function createFollow(req, res, next) {
 
 async function deleteFollow(req, res, next) {
   try {
-    let followerId = req.body.followerId;
-    let followedId = req.params.id;
+    const followerId = req.user.id;
+    const followedId = req.params.id;
 
     res.json(await usersFollow.deleteFollow(followerId, followedId));
   } catch (err) {
