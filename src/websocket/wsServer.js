@@ -39,11 +39,13 @@ wsServer.addChannel("notifications", {
   },
 });
 
+//RPC command to send a like notification to connected users
+// and all their connected clients (devices)
 wsServer.addRpc("like", (data, clientMetadata, client, wsServer) => {
-  console.log("Like received:", data);
+  //console.log("Like received:", data);
 
   //an user like a board, data is expected to have boardId and userId and username
-  if (data.username) {
+  if (!data.username || !data.from) {
     throw new WSServerError("Invalid data");
   }
 
@@ -51,6 +53,11 @@ wsServer.addRpc("like", (data, clientMetadata, client, wsServer) => {
   const to = data.username;
 
   const allClients = wsServer.getChannelClients("notifications");
+
+  for(const c of allClients) {
+    //console.log("Connected client:", wsServer.clients.get(c));
+  }
+  
   const toClients = allClients.filter(
     (c) => wsServer.clients.get(c).username === to
   );
@@ -59,9 +66,12 @@ wsServer.addRpc("like", (data, clientMetadata, client, wsServer) => {
     throw new WSServerError("Recipient not found");
   }
 
+  /*
+  // If you want to send back to all clients of the sender too
   const fromClients = allClients.filter(
-    (c) => wsServer.clients.get(c).username === username
+    (c) => wsServer.clients.get(c).username === from
   );
+  */
 
   const info = {
     type: "like",
@@ -69,8 +79,8 @@ wsServer.addRpc("like", (data, clientMetadata, client, wsServer) => {
   };
 
   //send like notification to all connected clients of the recipient
-  for (const fromSocket of fromClients) {
-    wsServer.sendCmd(fromSocket, "notification", info);
+  for (const toSocket of toClients) {
+    wsServer.sendCmd(toSocket, "like", info);
   }
 
   return { status: "ok", message: "Like processed" };
