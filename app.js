@@ -13,7 +13,8 @@ import apiRouter from "./src/routes/apiRouter.js";
 const app = express();
 
 if (process.env.NODE_ENV !== "test") {
-  wsServer.start();
+  const server = app.listen(8887);
+  wsServer.start({ server, path: "/ws" });
 }
 
 mongoose
