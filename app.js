@@ -15,10 +15,9 @@ const app = express();
 const httpServer = http.createServer(app);
 
 if (process.env.NODE_ENV !== "test") {
-  /*httpServer.listen(config.port, () => {
-    console.log(`WebSocket server is listening on port ${config.port}`);
-  });*/
-  wsServer.start({ httpServer });
+  /**/
+  httpServer.listen(config.ws_port, () => { console.log(`WebSocket server listening on port ${config.ws_port}`); });
+  wsServer.start({ server: httpServer });
 }
 
 mongoose
