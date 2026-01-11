@@ -3,6 +3,7 @@ import { wsServer } from "./src/websocket/wsServer.js";
 import createError from "http-errors";
 import logger from "morgan";
 import mongoose from "mongoose";
+import http from "http";
 
 import * as config from "./config.js";
 
@@ -11,10 +12,13 @@ import indexRouter from "./src/routes/index.js";
 import apiRouter from "./src/routes/apiRouter.js";
 
 const app = express();
+const httpServer = http.createServer(app);
 
 if (process.env.NODE_ENV !== "test") {
-  const server = app.listen(8887);
-  wsServer.start({ server, path: "/ws" });
+  /*httpServer.listen(config.port, () => {
+    console.log(`WebSocket server is listening on port ${config.port}`);
+  });*/
+  wsServer.start({ httpServer });
 }
 
 mongoose

@@ -10,3 +10,5 @@ export const database_url = process.env.DATABASE_URL || "mongdb://localhost/your
 export const jwt_secret = process.env.JWT_SECRET || "your-secret-key";
 
 export const origin_frontend = process.env.ORIGIN_FRONTEND || "http://localhost:5173";
+
+export const ws_port = process.env.WS_PORT || 3000;

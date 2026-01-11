@@ -28,7 +28,6 @@ function authCallback(token) {
 }
 
 const wsServer = new WSServerPubSub({
-  port: 8887,
   origins: origin_frontend,
   authCallback,
   
