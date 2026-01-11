@@ -2,8 +2,7 @@ import mongoose from "mongoose";
 
 import BoardsModel from "./boards.model.js";
 
-
-async function getBoardsWithLikesUserLabels(boardIdOrIds = null) {
+async function getBoardsWithLikesUserLabels(userId, boardIdOrIds = null) {
   const pipeline = [];
 
   // Match stage based on whether boardIdOrIds is provided
@@ -11,7 +10,11 @@ async function getBoardsWithLikesUserLabels(boardIdOrIds = null) {
     if (Array.isArray(boardIdOrIds)) {
       // Array of IDs (from getAllBoards)
       pipeline.push({
-        $match: { _id: { $in: boardIdOrIds.map(id => new mongoose.Types.ObjectId(id)) } },
+        $match: {
+          _id: {
+            $in: boardIdOrIds.map((id) => new mongoose.Types.ObjectId(id)),
+          },
+        },
       });
     } else {
       // Single ID (from getBoardById)
@@ -20,7 +23,7 @@ async function getBoardsWithLikesUserLabels(boardIdOrIds = null) {
       });
     }
   }
-
+  // Lookup likes and count them
   pipeline.push(
     {
       $lookup: {
@@ -35,6 +38,39 @@ async function getBoardsWithLikesUserLabels(boardIdOrIds = null) {
         likes: { $size: "$likes" },
       },
     },
+
+    // Lookup to check if the specific user has liked the board
+    {
+      $lookup: {
+        from: "boardlikes",
+        let: { boardId: "$_id" },
+        pipeline: [
+          {
+            $match: {
+              $expr: {
+                $and: [
+                  { $eq: ["$boardId", "$$boardId"] },
+                  { $eq: ["$userId", new mongoose.Types.ObjectId(userId)] },
+                ],
+              },
+            },
+          },
+        ],
+        as: "userLike",
+      },
+    },
+    {
+      $addFields: {
+        likedByUser: { $gt: [{ $size: "$userLike" }, 0] },
+      },
+    },
+    // Remove the temporary userLike array
+    {
+      $project: {
+        userLike: 0,
+      },
+    },
+
     {
       $lookup: {
         from: "boardslabels",
@@ -73,6 +109,5 @@ async function getBoardsWithLikesUserLabels(boardIdOrIds = null) {
 
   return await BoardsModel.aggregate(pipeline).exec();
 }
-
 
 export { getBoardsWithLikesUserLabels };

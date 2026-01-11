@@ -107,7 +107,8 @@ const router = express.Router();
  *               title: "My First Board"
  *               description: "Incredible board description"
  *               userId: "60c72b2f9b1d8c001c8e4b8a"
- *               imageUrl: "iVBORw0KGgoAAAANSUhEUgAA..."
+ *               imageUrl: "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAA..."
+ *               likeByUser: true   
  *               isPublic: true
  *               createdAt: "2023-10-01T12:00:00Z"
  *     Board:
@@ -121,7 +122,8 @@ const router = express.Router();
  *             title: "My New Board"
  *             description: "A description for the new board"
  *             userId: "60c72b2f9b1d8c001c8e4b8a"
- *             imageUrl: "iVBORw0KGgoAAAANSUhEUgAA..."
+ *             imageUrl: "data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAA..."
+ *             likeByUser: false
  *             isPublic: true
  *             createdAt: "2023-10-01T12:00:00Z"
  */

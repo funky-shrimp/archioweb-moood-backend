@@ -12,18 +12,18 @@ import {
 
 import { getBoardsWithLikesUserLabels } from "./boards.utils.js";
 
-async function getAllBoards(userId, { limit = 20, cursor = null } = {}) {
+async function getAllBoards(requestingUserId, { limit = 20, cursor = null, filterByUserId = null } = {}) {
   let queryObj = {};
 
   // apply userId filter if provided
-  if (userId !== undefined) {
+  if (filterByUserId !== null) {
     // Check if any board exists for this userId
-    const exists = await Boards.exists({ userId });
+    const exists = await Boards.exists({ userId: filterByUserId });
     if (!exists) {
       throw new Error("No boards found for the provided userId.");
     }
 
-    queryObj.userId = userId;
+    queryObj.userId = filterByUserId;
   }
 
   // Cursor-based pagination: only fetch boards with _id < cursor
@@ -42,7 +42,9 @@ async function getAllBoards(userId, { limit = 20, cursor = null } = {}) {
   const boardIds = boards.map((b) => b._id);
 
   // If no filter, boardIds will be empty, so pass undefined to get all boards
+  // Pass the REQUESTING user's ID to check likes
   const items = await getBoardsWithLikesUserLabels(
+    requestingUserId,
     boardIds.length > 0 ? boardIds : undefined
   );
 
@@ -80,8 +82,8 @@ async function createBoard(boardData) {
   return newBoard;
 }
 
-async function getBoardById(id) {
-  const board = await getBoardsWithLikesUserLabels(id);
+async function getBoardById(userId,id) {
+  const board = await getBoardsWithLikesUserLabels(userId,id);
   return board[0] || null;
 }
 

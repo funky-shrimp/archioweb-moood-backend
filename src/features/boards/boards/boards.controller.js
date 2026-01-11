@@ -3,12 +3,18 @@ import * as boardsService from "./boards.service.js";
 import mongoose from "mongoose";
 import Board from "./boards.model.js";
 
-import { isUserThingOwner, isUserAdmin } from "../../../middlewares/utils.middleware.js";
+import {
+  isUserThingOwner,
+  isUserAdmin,
+} from "../../../middlewares/utils.middleware.js";
 
 async function getAllBoards(req, res, next) {
   try {
-    // validate userId if provided in the query parameters
-    let userId = undefined;
+    // Get the requesting user's ID (for checking likes)
+    const requestingUserId = req.user ? req.user.id : null;
+
+    // Get the filter userId from query (for filtering boards by owner)
+    let filterByUserId = undefined;
 
     let limit = parseInt(req.query.limit) || 2;
     let cursor = req.query.cursor || null;
@@ -25,13 +31,13 @@ async function getAllBoards(req, res, next) {
 
     if (req.query.userId) {
       if (mongoose.Types.ObjectId.isValid(req.query.userId)) {
-        userId = req.query.userId;
+        filterByUserId = req.query.userId;
       } else {
         throw new Error("Invalid userId");
       }
     }
 
-    res.json(await boardsService.getAllBoards(userId, { limit, cursor }));
+    res.json(await boardsService.getAllBoards(requestingUserId, { limit, cursor, filterByUserId }));
   } catch (err) {
     next(err);
   }
@@ -50,8 +56,9 @@ async function createBoard(req, res, next) {
 
 async function getBoardById(req, res, next) {
   try {
+    const userId = req.user ? req.user.id : null;
     //console.log("Fetching board with ID:", req.params.id);
-    res.json(await boardsService.getBoardById(req.params.id));
+    res.json(await boardsService.getBoardById(userId, req.params.id));
   } catch (err) {
     next(err);
   }
@@ -64,7 +71,9 @@ async function updateBoard(req, res, next) {
 
     const isOwner = await isUserThingOwner(Board, boardId, userId);
     if (!isOwner) {
-      const error = new Error("Unauthorized: Only the board owner can update this board.");
+      const error = new Error(
+        "Unauthorized: Only the board owner can update this board."
+      );
       error.status = 403;
       throw error;
     }

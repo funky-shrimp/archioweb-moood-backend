@@ -1,5 +1,5 @@
 import express from "express";
-import {wsServer} from "./src/websocket/wsServer.js";
+import { wsServer } from "./src/websocket/wsServer.js";
 import createError from "http-errors";
 import logger from "morgan";
 import mongoose from "mongoose";
@@ -12,15 +12,18 @@ import apiRouter from "./src/routes/apiRouter.js";
 
 const app = express();
 
-wsServer.start();
+if (process.env.NODE_ENV !== "test") {
+  wsServer.start();
+}
 
-mongoose.connect(config.database_url || "mongdb://localhost/your-app-name").catch((err) => {
-  console.error("MongoDB connection error:", err);
-});
+mongoose
+  .connect(config.database_url || "mongdb://localhost/your-app-name")
+  .catch((err) => {
+    console.error("MongoDB connection error:", err);
+  });
 
-
-if (process.env.NODE_ENV !== 'test') {
-  app.use(logger('dev'));
+if (process.env.NODE_ENV !== "test") {
+  app.use(logger("dev"));
 }
 
 app.use(express.json());
